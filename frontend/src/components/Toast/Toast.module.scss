@@ -1,0 +1,9 @@
+.toastContainer{
+    background-color: var(--toast-background);
+    color: var(--green); 
+    padding: 1.5rem;
+    border-radius: 8px;  
+    position: absolute;
+    top: 4rem;
+    right: 0;
+}
