@@ -4,7 +4,6 @@ import Home from "../../pages/Home/Home";
 import Login from "../../pages/Login/Login";
 import AuthWelcome from "../../components/AuthWelcome/AuthWelcome";
 import { ROUTES } from "../../constants/RouteConstants";
-import DashboardLayout from "../../layouts/DashboardLayout/DashboardLayout";
 
 export const router= createBrowserRouter(
     [
@@ -26,10 +25,6 @@ export const router= createBrowserRouter(
                     ]
                 }
             ]
-        },
-        {
-            path:'dashboard',
-            element:<DashboardLayout/>
         }
     ]
 )
