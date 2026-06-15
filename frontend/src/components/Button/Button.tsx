@@ -1,8 +1,8 @@
 import type { ButtonProps } from "./Button.type"
 import styles from './Button.module.scss'
-const Button=({children, ...props}: ButtonProps)=>{
+const Button=({children,type='button', ...props}: ButtonProps)=>{
     return(
-        <button {...props}>{children}</button>
+        <button type={type} {...props}>{children}</button>
     )
 }
 

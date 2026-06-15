@@ -3,6 +3,7 @@ import MainLayout from "../../layouts/MainLayout/MainLayout";
 import Home from "../../pages/Home/Home";
 import Login from "../../pages/Login/Login";
 import AuthWelcome from "../../components/AuthWelcome/AuthWelcome";
+import { ROUTES } from "../../constants/RouteConstants";
 
 export const router= createBrowserRouter(
     [
@@ -18,7 +19,7 @@ export const router= createBrowserRouter(
                             element: <AuthWelcome/>,
                         },
                         {
-                            path: 'login',
+                            path: ROUTES.LOGIN,
                             element: <Login/>
                         }
                     ]

@@ -1,10 +1,10 @@
 import styles from './AuthWelcome.module.scss'
 import { Link } from 'react-router-dom'
 import { MoveRight } from 'lucide-react'
-import { ROUTES } from '../../constants/constants'
+import { ROUTES } from '../../constants/RouteConstants'
 const AuthWelcome=()=>{
     return (
-        <div className={styles.welcome}>
+        <section className={styles.welcome}>
             <h1>Welcome to TaskFlow</h1>
             <p>
                 Plan Smarter, work together, and achieve more with TaskFlow's intuitive project management experience.
@@ -13,7 +13,7 @@ const AuthWelcome=()=>{
                 <Link to={ROUTES.LOGIN} className={styles.link}>Get started</Link>
                 <MoveRight className={styles.moveRight}/>
             </div>
-        </div>
+        </section>
     )
 }
 export default AuthWelcome;

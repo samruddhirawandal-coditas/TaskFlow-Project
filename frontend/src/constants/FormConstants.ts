@@ -1,0 +1,5 @@
+export const FORM_ACTIONS = {
+    SHOW_OTP_FORM: 'SHOW_OTP_FORM',
+    HIDE_OTP_FORM: 'HIDE_OTP_FORM'
+}
+

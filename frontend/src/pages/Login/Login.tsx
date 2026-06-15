@@ -6,17 +6,20 @@ import {type LoginFormData, type OTPFormData} from './Login.type'
 import { emailValidation, otpValidation } from '../../app/formValidations/formValidations';
 import { useReducer } from 'react';
 import { formReducer, initialState } from './Login.State';
+import FormError from '../../components/FormError/FormError';
+import { FORM_ACTIONS } from '../../constants/FormConstants';
 
 const Login=()=>{
-    const getOTPForm= useForm<LoginFormData>({mode: "onChange"})
-    const verifyOTPForm= useForm<OTPFormData>({mode: "onChange"})
-    const [{setShowOTPForm}, dispatch]= useReducer(formReducer, initialState);
+    const getOTPForm= useForm<LoginFormData>()
+    const verifyOTPForm= useForm<OTPFormData>()
+    const [{showOTPForm}, dispatch]= useReducer(formReducer, initialState);
 
     const onGetOTP=async(data: LoginFormData)=>{
-        dispatch({type:'SHOW_OTP_FORM'});
+        dispatch({type: FORM_ACTIONS.SHOW_OTP_FORM});
     }
 
     const onVerifyOTP= async(data: OTPFormData)=>{
+        dispatch({type: FORM_ACTIONS.HIDE_OTP_FORM})
     }
 
     return(
@@ -24,15 +27,15 @@ const Login=()=>{
             <div className={styles.login}>
                 <h3>Log in to continue</h3>
                 {
-                   !setShowOTPForm ? 
+                   !showOTPForm ? 
                    <>
                    <form onSubmit={getOTPForm.handleSubmit(onGetOTP)}>
-                         <div>
+                        <div>
                             <Input label='Email' placeholder='Enter your email' type='email' {...getOTPForm.register('email', emailValidation)}/>
-                            {getOTPForm.formState.errors?.email && <span className={styles.errorMsg}> {getOTPForm.formState.errors?.email?.message}</span>}
+                            {getOTPForm.formState.errors?.email && <FormError>{getOTPForm.formState.errors?.email?.message}</FormError>}
                         </div> 
                         <div className={styles.btn}>
-                            <PrimaryBtn>Get OTP</PrimaryBtn>
+                            <PrimaryBtn type='submit'>Get OTP</PrimaryBtn>
                         </div>
                    </form> 
                    </>
@@ -41,10 +44,10 @@ const Login=()=>{
                         <Input label='Email' value={getOTPForm.getValues('email')} {...verifyOTPForm.register('email')} disabled/>
                         <div>
                             <Input label='Enter OTP' placeholder='Enter OTP' type='number' {...verifyOTPForm.register('otp', otpValidation)}/>
-                            {verifyOTPForm.formState.errors?.otp && <span className={styles.errorMsg}> {verifyOTPForm.formState.errors?.otp?.message}</span>}
+                            {verifyOTPForm.formState.errors?.otp && <FormError>{verifyOTPForm.formState.errors?.otp?.message}</FormError>}
                         </div>
                         <div className={styles.btn}>
-                            <PrimaryBtn>Verify OTP</PrimaryBtn>
+                            <PrimaryBtn type='submit'>Verify OTP</PrimaryBtn>
                         </div>
                    </form>
                 }

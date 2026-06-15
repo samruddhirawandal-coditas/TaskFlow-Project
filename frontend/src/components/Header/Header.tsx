@@ -3,7 +3,7 @@ import styles from './Header.module.scss'
 import logoname from '../../assets/images/TaskFlow.png'
 import logo from '../../assets/images/TaskFlow icon.png'
 import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTES } from "../../constants/constants";
+import { ROUTES } from "../../constants/RouteConstants";
 
 const Header=()=>{
     const location= useLocation();
@@ -21,7 +21,7 @@ const Header=()=>{
             </div>
             {
                 !isLoginPage ?
-                <PrimaryBtn onClick={()=>handleGetStarted()}>Login</PrimaryBtn> :
+                <PrimaryBtn onClick={handleGetStarted}>Login</PrimaryBtn> :
                 null
             }
         </header>
