@@ -1,0 +1,23 @@
+.logoname{
+    width: 6rem;
+}
+.logo{
+    width: 3rem;
+}
+
+.header{
+    padding: 0.5rem 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0px 8px 2px var(--header-shadow);
+    position: relative;
+    z-index: 1;
+
+    div{
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+}
