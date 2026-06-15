@@ -7,8 +7,7 @@ export const initialState: FormState={
 
 export const formReducer=(state: FormState, action:FormAction)=>{
     switch(action.type){
-        case FORM_ACTIONS.SHOW_OTP_FORM: return {...state, showOTPForm:true};
-        case FORM_ACTIONS.HIDE_OTP_FORM: return {...state, showOTPForm:false};
+        case FORM_ACTIONS.TOGGLE_OTP_FORM: return {...state, showOTPForm: !state.showOTPForm};
         default: return state;
     }
 }

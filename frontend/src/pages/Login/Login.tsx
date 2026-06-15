@@ -15,11 +15,11 @@ const Login=()=>{
     const [{showOTPForm}, dispatch]= useReducer(formReducer, initialState);
 
     const onGetOTP=async(data: LoginFormData)=>{
-        dispatch({type: FORM_ACTIONS.SHOW_OTP_FORM});
+        dispatch({type: FORM_ACTIONS.TOGGLE_OTP_FORM});
     }
 
     const onVerifyOTP= async(data: OTPFormData)=>{
-        dispatch({type: FORM_ACTIONS.HIDE_OTP_FORM})
+        dispatch({type: FORM_ACTIONS.TOGGLE_OTP_FORM})
     }
 
     return(
