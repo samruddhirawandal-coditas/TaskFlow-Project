@@ -1,4 +1,5 @@
 export const FORM_ACTIONS = {
     TOGGLE_OTP_FORM: 'TOGGLE_OTP_FORM',
+    TOGGLE_TOAST:'TOGGLE_TOAST'
 }
 
