@@ -30,10 +30,6 @@ const Login=()=>{
         await getOtp(data).unwrap();
         formDispatch({type: FORM_ACTIONS.TOGGLE_OTP_FORM});
         formDispatch({type:FORM_ACTIONS.TOGGLE_TOAST});
-
-        setTimeout(()=>{
-            formDispatch({type:FORM_ACTIONS.TOGGLE_TOAST});
-        }, 3000);
         setResendTimer(40);
     }
 
@@ -64,7 +60,10 @@ const Login=()=>{
 
     return(
         <section className={styles.section}>
-            {showToast && <Toast msg='OTP send Successfully'/>}
+            {showToast && <Toast
+             msg='OTP send Successfully'
+             onClose={()=>formDispatch({type:FORM_ACTIONS.TOGGLE_TOAST})}
+            />}
             <div className={styles.login}>
                 <h3>Log in to continue</h3>
                 {
@@ -76,7 +75,7 @@ const Login=()=>{
                             {(getOTPForm.formState.errors?.email || onGetOtp.error) && <FormError>{getOTPForm.formState.errors?.email?.message || 'Failed to send OTP'}</FormError>}
                         </div> 
                         <div className={styles.btn}>
-                            <PrimaryBtn type='submit'>Get OTP</PrimaryBtn>
+                            <PrimaryBtn type='submit' disabled={onGetOtp.isLoading}>Get OTP</PrimaryBtn>
                         </div>
                    </form> 
                    </>
@@ -90,10 +89,10 @@ const Login=()=>{
                          <div>
                             {resendTimer > 0 ? 
                             (<span className={styles.timer}>Resend OTP in{" "}{resendTimer}s</span>) : 
-                            (<button type="button" onClick={handleResendOTP} className={styles.resendBtn}>Resend OTP</button>)}
+                            (<button type="button" onClick={handleResendOTP} className={styles.resendBtn} disabled={onVerifyOtp.isLoading}>Resend OTP</button>)}
                         </div>
                         <div className={styles.btn}>
-                            <PrimaryBtn type='submit' disabled={resendTimer===0}>Verify OTP</PrimaryBtn>
+                            <PrimaryBtn type='submit' disabled={resendTimer===0 || onVerifyOtp.isLoading}>Verify OTP</PrimaryBtn>
                         </div>
                    </form>
                 }
