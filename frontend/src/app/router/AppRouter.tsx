@@ -28,7 +28,7 @@ export const router= createBrowserRouter(
             ]
         },
         {
-            path:'dashboard',
+            path:ROUTES.DASHBOARD,
             element:<DashboardLayout/>
         }
     ]

@@ -15,14 +15,11 @@ export const authSlice= createSlice({
     initialState,
     reducers:{
         login:(state, action:PayloadAction<LoginResponse>)=>{
-            console.log(action.payload);
-            console.log(state.isAuthenticated);
             state.isAuthenticated=true;
             state.email= action.payload.email;
             state.first_name= action.payload.first_name;
             state.access_token=action.payload.access_token;
             state.role= action.payload.role
-            console.log(state.isAuthenticated);
         },
         logout:(state)=>{
             state.email=null;
