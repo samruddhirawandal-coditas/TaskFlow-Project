@@ -9,7 +9,7 @@ const Toast=({msg, duration=3000, onClose}: ToastProps)=>{
         return () => {
             clearTimeout(timer);
         };
-    }, [duration])
+    }, [duration, onClose])
     return(
         <div className={styles.toastContainer}>
             <p>{msg}</p>
