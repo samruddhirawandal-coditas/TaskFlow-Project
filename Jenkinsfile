@@ -38,6 +38,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('frontend') {
+                    sh 'pnpm ci --ignore-scripts'
                     sh 'pnpm install --frozen-lockfile'
                     sh 'pnpm approve-builds'
                 }
