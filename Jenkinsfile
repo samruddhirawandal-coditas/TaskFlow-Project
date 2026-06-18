@@ -38,8 +38,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('frontend') {
-                    sh 'pnpm approve-builds'
                     sh 'pnpm install --frozen-lockfile'
+                    sh 'pnpm approve-builds'
                 }
             }
         }
