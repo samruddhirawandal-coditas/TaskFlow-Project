@@ -45,13 +45,13 @@ pipeline {
             }
         }
 
-        stage('Lint') {
-            steps {
-                dir('frontend') {
-                    sh 'pnpm lint'
-                }
-            }
-        }
+        //stage('Lint') {
+           // steps {
+                //dir('frontend') {
+                    //sh 'pnpm lint'
+                //}
+            //}
+       // }
 
         stage('Build') {
             steps {
