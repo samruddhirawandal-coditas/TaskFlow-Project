@@ -1,7 +1,7 @@
 import redis 
 from redis.exceptions import RedisError
 from fastapi import FastAPI ,HTTPException,status
-from app.utils.config import setting
+from ...utils.config import setting
 
 
 def get_redis_client():

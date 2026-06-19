@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.module.scss'
+import './index.scss'
 import './styles/_varibales.scss'
 import App from './App.tsx'
 import store from './redux/store/store.ts'

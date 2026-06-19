@@ -10,9 +10,11 @@ from ...Authentication_Flow.authentication_service.redis import get_redis_client
 from ...Authentication_Flow.authentication_service.otp_service import generate_otp,get_otp,save_otp,verify_otp
 from ...Authentication_Flow.authentication_model.member_model import StatusEnum ,Member
 from ..company_model.company_model import SubscriptionEnum
-from ..company_repo.repo import create_company,get_member_by_email, get_role_by_name,create_company_admin, assign_role_to_member ,get_company_by_name ,get_company_by_domain
+from ..company_repo.repo import create_company,get_member_by_email, get_role_by_name,create_company_admin, assign_role_to_member ,get_company_by_name ,get_company_by_domain,get_companies_by_asc,get_compnaies,get_companies_by_id ,delete_company_by_id,update_company_fields,get_all_companies
 from ...utils.config import setting
+from ...utils.hashing import hash
 # from .upload_file import uplaod_file
+
 
 
 logger.info("Company Onboarding")
@@ -31,8 +33,8 @@ def onboarding( db: Session,
                admin_name: str,
                admin_last_name:str,
                admin_email: EmailStr,
-            #    logo: UploadFile,
-               user: Member):
+               logo: str,
+               ):
     try:
         if not if_super_admin:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
@@ -91,29 +93,10 @@ def onboarding( db: Session,
     # logo_path = uplaod_file(file_path, s3_object_name)
 
 
-    company = create_company(db, name=name, domain=domain, subscription=subscription) #logo=logo_path
-    admin = create_company_admin(
-        db,
-        first_name=admin_name,
-        last_name=admin_last_name,
-        email=admin_email,
-        company_id=company.id,
-    )
+    company = create_company(db, name=name, domain=domain,logo=logo, subscription=subscription) #logo=logo_path
+    admin = create_company_admin(db,first_name=admin_name,last_name=admin_last_name,email=admin_email,company_id=company.id)
     
-    hashed_password=hash(Member.password)
-    company=create_company(db,
-    name=name,
-    # logo=file_url,
-    subscription=subscription)
-
-    admin=create_company_admin(db,
-    first_name=admin_name,
-    email=admin_email,
-    company_id=company.id,
-    password=hashed_password,
-    )
-    
-    
+    # hashed_password=hash(Member.password)    
     admin_role = get_role_by_name(db, "ADMIN")
     if admin_role:
         assign_role_to_member(db, admin.id, admin_role.id)
@@ -153,7 +136,7 @@ def activate_company_admin(db: Session, email: str, otp: str, password: str):
             detail="Invalid or expired OTP",
         )
 
-    member.password_hash = hash_password(password)
+    member.password = hash(password)
     member.status = StatusEnum.ACTIVE
     db.commit()
     db.refresh(member)
@@ -161,4 +144,74 @@ def activate_company_admin(db: Session, email: str, otp: str, password: str):
     return {
         "message": "Account activated successfully",
         "member_id": member.id,
+    }
+
+def get_all_company(db:Session):
+    return get_all_companies(db)
+
+def all_companies(db: Session,search: str | None = None,domain: str | None = None,subscription: SubscriptionEnum | None = None,sort_by: str = "name",sort_order: str = "desc",):
+    return get_compnaies(db=db,search=search,domain=domain,subscription=subscription,sort_by=sort_by,sort_order=sort_order,)
+
+def all_compnaies_asc(db:Session):
+    return get_companies_by_asc(db)
+
+
+def get_company(db: Session, company_id: int):
+    company = get_companies_by_id(db, company_id)
+
+    if company is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
+
+    return company
+
+
+def delete_company(db: Session, company_id: int):
+    id = get_companies_by_id(db, company_id)
+    print(id)
+    if id is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
+
+    delete_company_by_id(db, company_id)
+    db.commit()
+    return {"message": "Company deleted successfully"}
+
+def edit_company(db: Session,company_id: int,name: str | None = None,domain: str | None = None,logo: str | None = None,subscription: SubscriptionEnum | None = None,):
+    company = get_companies_by_id(db, company_id)
+
+    if company is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Company not found",
+        )
+
+    if name is not None and name != company.name:
+        existing_company = get_company_by_name(db, name=name)
+        if existing_company is not None:
+            raise HTTPException(
+                status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                detail="Company name already exists",
+            )
+
+    if domain is not None and domain != company.domain:
+        existing_domain = get_company_by_domain(db, domain=domain)
+        if existing_domain is not None:
+            raise HTTPException(
+                status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                detail="Company domain already exists",
+            )
+
+    update_company_fields(
+        db=db,
+        company=company,
+        name=name,
+        domain=domain,
+        logo=logo,
+        subscription=subscription,
+    )
+    db.commit()
+    db.refresh(company)
+
+    return {
+        "message": "Company updated successfully",
+        "company": company,
     }

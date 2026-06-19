@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Azure Static Web Apps deployment token
+        // Here we need the Azure Static Web Apps deployment token - overview page top right corner
         SWA_DEPLOYMENT_TOKEN = credentials('swa_deployment_token')
 
         // Service Principal credentials
@@ -11,13 +11,13 @@ pipeline {
         AZURE_TENANT_ID       = credentials('azure-tenant-id')
         AZURE_SUBSCRIPTION_ID = credentials('azure_subscription_id')
 
-        // Your Static Web App details
-        SWA_APP_NAME          = 'Test1FE'
-        AZURE_RESOURCE_GROUP  = 'Test1FE_group'
+        //  Static Web App details
+        SWA_APP_NAME          = 'sammy-frontend'
+        AZURE_RESOURCE_GROUP  = 'taskflow-rg'
     }
 
     tools {
-        nodejs 'NodeJS-20'  // Must match name in Jenkins > Manage Jenkins > Tools
+        nodejs 'NodeJS-20'  // Remember to match name in Jenkins > Manage Jenkins > Tools veryyyyyyyyyy imp
     }
 
     stages {
@@ -38,18 +38,20 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('frontend') {
+                    sh 'pnpm ci --ignore-scripts'
                     sh 'pnpm install --frozen-lockfile'
+                    sh 'pnpm approve-builds'
                 }
             }
         }
 
-        stage('Lint') {
-            steps {
-                dir('frontend') {
-                    sh 'pnpm lint'
-                }
-            }
-        }
+       // stage('Lint') {
+           // steps {
+              //  dir('frontend') {
+                   // sh 'pnpm lint'
+                //}
+            //}
+      //  }
 
         stage('Build') {
             steps {

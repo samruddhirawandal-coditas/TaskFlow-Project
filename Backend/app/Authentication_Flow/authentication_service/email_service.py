@@ -1,6 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
-from app.utils.config import setting
+from ...utils.config import setting
 from fastapi import HTTPException,status
 
 def get_ses_client():
@@ -36,8 +36,7 @@ def send_otp_email(email:str,otp:str):
 def send_actvation_link_email(email:str,otp:str):
     print(f"Sending activation link {email}")
     activation_link="http://localhost:5173/activate-admin"
-    body=(f"Activation otp is {otp}",
-          f"Activation link is {activation_link}")
+    body=f"Activation otp is {otp} and Activation link is {activation_link}"
+    print(otp)
     send_email(email,
-               "Activate admin",
-               body)
+               "Activate admin",body)

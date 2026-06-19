@@ -5,10 +5,10 @@ from enum import Enum
 from ...model.comment_model import Comment
 from ...model.task_model import Task
 from ...Company_Onboarding.company_model.company_model import Company
-from ...model.member_project_role_mapping_model import MemberProjectRoleMapping
+from ...Project_Flow.project_model.member_project_role_mapping_model import MemberProjectRoleMapping
 from ...model.member_permission_mapping_model import MemberPermissionMapping
 from ...model.member_task_mapping_model import MemberTaskMapping
-from ..authentication_model.member_role_mapping_model import MemberRoleMapping
+from .member_role_mapping_model import MemberRoleMapping
 class StatusEnum(str,Enum):
     ACTIVE="active"
     PENDING="pending"

@@ -3,7 +3,7 @@ from ...db.base import Base
 from sqlalchemy.orm import relationship
 from enum import Enum
 
-from ...model.project_model import Project
+from ...Project_Flow.project_model.project_model import Project
 
 class SubscriptionEnum(str,Enum):
     ALL_FEATURE="all_feature"

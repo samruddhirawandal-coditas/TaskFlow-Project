@@ -1,29 +1,14 @@
 from fastapi import Depends,HTTPException,status
 from ..jwt.handler import get_current_user
-from ...Authentication_Flow.authentication_schema.auth_schema import TokenData
-from ...Authentication_Flow.authentication_model.role_model import Role
+ 
 
-
-allowed_roles={role.value for role in Role}
-
-def role_necessary(allowed_roles: list[str]):
-    def only_role(user:TokenData=Depends(get_current_user)):
-        user_roles = [role for role in (user.roles or [])]
-        allowed=False
-        for user_role in user_roles:
-            for allowed_role in allowed_roles:
-                if user_role ==allowed_role:
-                    allowed=True
-        if allowed==False:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Insufficient permissions."
-            )
-        return user
-    return only_role
-
-
-
-# 
+def role_necessary(data:str):
+    def role_checker(user:str=Depends(get_current_user)):
+        member_roles=user.get("roles") or []
+        for role_name in member_roles:
+            if role_name in data:
+                return user
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail="Not Authorized")
+    return role_checker
 
 

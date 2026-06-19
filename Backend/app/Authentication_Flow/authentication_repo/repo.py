@@ -1,6 +1,4 @@
 from sqlalchemy.orm import Session
-
-# from Backend.app.Authentication_Flow.authentication_model.member_model import Member
 from ..authentication_model.member_model import Member
 
 
