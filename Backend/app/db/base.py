@@ -17,4 +17,3 @@ def get_db():
     finally:
         logger.info("SESSION CLOSED")
         db.close()
-

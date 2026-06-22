@@ -3,7 +3,7 @@ from ...db.base import Base
 from sqlalchemy.orm import relationship
 from enum import Enum
 
-from ...Project_Flow.project_model.project_model import Project
+from ...model.project_model import Project
 
 class SubscriptionEnum(str,Enum):
     ALL_FEATURE="all_feature"
@@ -17,6 +17,7 @@ class Company(Base):
     logo=Column(String,nullable=False)
     subcription=Column(SqlEnum(SubscriptionEnum),nullable=False)
     domain=Column(String,unique=True,nullable=False)
+    
     # relationship with member
     members=relationship("Member",back_populates="company")
 

@@ -6,7 +6,7 @@ Create Date: 2026-06-18 12:28:05.457628
 
 """
 from typing import Sequence, Union
-
+from app.utils.hashing import hash
 from alembic import op
 import sqlalchemy as sa
 
@@ -37,7 +37,7 @@ VALUES
     'LIDBE',
     'aditilidbe16@gmail.com',
     'ACTIVE',
-    'super123',
+    f"{hash('super123')}",
     '14'
 )
         """)

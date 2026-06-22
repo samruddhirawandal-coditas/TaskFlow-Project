@@ -1,16 +1,16 @@
 from logging.config import fileConfig
-from Backend.app.Project_Flow.project_model import member_project_role_mapping_model
-from Backend.app.Company_Onboarding.company_model import Company
-from Backend.app.Authentication_Flow.authentication_model import role_model
-from Backend.app.utils.config import setting
+from Backend.app.model import member_project_role_mapping_model
+from app.Company_Onboarding.company_model import Company
+from app.Authentication_Flow.authentication_model import role_model
+from app.utils.config import setting
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from Backend.app.db.base import Base
+from app.db.base import Base
 from alembic import context
-from Backend.app.model import role_permission_mapping_model
-from Backend.app.Authentication_Flow.authentication_model import member_model, member_role_mapping_model
-from Backend.app.model import member_permission_mapping_model, member_task_mapping_model
-
+from app.model import role_permission_mapping_model
+from app.Authentication_Flow.authentication_model import member_model, member_role_mapping_model
+from app.model import member_permission_mapping_model, member_task_mapping_model
+from app.model import task_attachement_model,project_invite_model
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

@@ -45,10 +45,8 @@ def delete_otp(email: str, redis_client: Redis = None):
 def verify_otp(email: str, otp: str, redis_client: Redis = None):
     client = redis_client or get_redis_client()
     key = otp_key(email)
-    print(key)
     saved_otp = client.get(key)
     ttl = client.ttl(key)
-    print(saved_otp)
     if not saved_otp or ttl <= 0:
         return False
     

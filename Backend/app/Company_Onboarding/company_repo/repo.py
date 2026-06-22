@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-
+from fastapi import HTTPException,status,Depends
 from ..company_model.company_model import Company,SubscriptionEnum
 from ...Authentication_Flow.authentication_model.member_model import Member 
 from ...Authentication_Flow.authentication_model.member_model import MemberRoleMapping
@@ -27,10 +27,12 @@ def get_companies_by_asc(db: Session):
 def get_all_companies(db:Session):
     return db.query(Company).all()
 
+
 def get_compnaies(db:Session,search:str |None=None,domain:str |None=None,subscription: SubscriptionEnum | None = None,sort_by:str="name",sort_order:str="desc",):
     query=db.query(Company)
     if search:
-        search_by=search.strip()
+
+        search_by= f"%{search.strip()}%"
         query=query.filter((Company.name.ilike(search_by)) | (Company.domain.ilike(search_by)))
         if domain:
             query=query.filter(Company.domain==domain)
@@ -39,6 +41,7 @@ def get_compnaies(db:Session,search:str |None=None,domain:str |None=None,subscri
 
         sorting={'name':Company.name,
                  'domain':Company.domain,}
+        
         sortin=sorting.get(sort_by,Company.name)
         if sort_order.lower() =="asc":
             query=query.order_by(asc(sortin))
@@ -48,8 +51,8 @@ def get_compnaies(db:Session,search:str |None=None,domain:str |None=None,subscri
         return query.all()
     
 def get_companies_by_id(db: Session,company_id:int):
-    print(company_id)
-    return db.query(Company).filter(Company.id==company_id).first()
+    return  db.query(Company).filter(Company.id==company_id).first()
+     
 
 def create_company(db: Session, name: str, domain:str, logo:str,subscription:SubscriptionEnum):  #logo: str
     company = Company(

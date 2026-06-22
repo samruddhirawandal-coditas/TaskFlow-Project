@@ -37,6 +37,5 @@ def send_actvation_link_email(email:str,otp:str):
     print(f"Sending activation link {email}")
     activation_link="http://localhost:5173/activate-admin"
     body=f"Activation otp is {otp} and Activation link is {activation_link}"
-    print(otp)
     send_email(email,
                "Activate admin",body)

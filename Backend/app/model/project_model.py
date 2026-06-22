@@ -1,5 +1,5 @@
-from sqlalchemy import Column, String,Integer,Enum as SqlEnum ,ForeignKey ,TIMESTAMP
-from ...db.base import Base
+from sqlalchemy import Column, String,Integer,Enum as SqlEnum ,ForeignKey ,TIMESTAMP ,Boolean
+from ..db.base import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from enum import Enum
@@ -10,6 +10,8 @@ class Project(Base):
     name=Column(String,unique=True,nullable=False)
     description=Column(String,nullable=False)
     created_at=Column(TIMESTAMP(timezone=True),nullable=False,server_default=func.now())
+    is_archived=Column(Boolean,nullable=False,default=False,server_default="false")
+    is_deleted=Column(Boolean,nullable=False,default=False,server_default="false")
 
     #relationship with company
     company_id=Column(Integer,ForeignKey("companys.id"))
@@ -24,4 +26,5 @@ class Project(Base):
     #relationship with member 
     member_role_mappings=relationship("MemberProjectRoleMapping",back_populates="project")
 
-    
+    #relationship with invitws 
+    invites=relationship("ProjectInvite",back_populates="project")

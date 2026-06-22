@@ -15,6 +15,7 @@ class Task(Base):
     name=Column(String,unique=True,nullable=False)
     status=Column(SqlEnum(TaskStatusEnum),default=TaskStatusEnum.PENDING,nullable=False)
     created_at=Column(TIMESTAMP(timezone=True),nullable=False,server_default=func.now())
+    description=Column(String,nullable=True)
 
     #relationship with project 
     project_id=Column(Integer,ForeignKey("projects.id"),nullable=False)
@@ -34,3 +35,6 @@ class Task(Base):
 
     #relationship with assigned member 
     member_mappings=relationship("MemberTaskMapping",back_populates="task")
+
+    #relationship with attachemnet of task 
+    attachments=relationship("TaskAttachment",back_populates="task")

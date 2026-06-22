@@ -9,7 +9,7 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-from  Backend.app.utils.config import setting
+from  app.utils.config import setting
 
 # revision identifiers, used by Alembic.
 revision: str = '0c070e1cccbf'
@@ -45,5 +45,5 @@ def downgrade() -> None:
     """Downgrade schema."""
     op.execute("""
         DELETE FROM members 
-        WHERE name = 'ZOHO'
+        WHERE name = 'ZOHO' AND domain='zoho.com'
     """)

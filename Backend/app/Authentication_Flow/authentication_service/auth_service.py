@@ -13,7 +13,6 @@ from ...utils.hashing import verify
 def request_otp(email, db:Session):
     redis_client=None
     try:
-        # print(email)
         member= get_member_by_email(email, db)
         if member is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -41,11 +40,11 @@ def login_with_otp(email:str,otp:str,db:Session):
     if not verify_otp(email,otp):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Invalid otp")
-    # role = None
+   
     role=get_member_role(member)
     if member.project_role_mappings:
         role = member.project_role_mappings[0].role.name
-    print(role)
+    
     access_token = create_access_token(member, role)
 
     return {
@@ -66,15 +65,15 @@ def valid_passwrod(plain_password:str,hashed_password:str):
 
 def login_member(data: MemberLogin, db: Session):
     member =  get_member_by_email(data.email, db)
-    # print(member)
+    
     if not member :
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
         )
-    #(data.password,Member.password)
+    
     if not member.password:
-        # print(data.password)
+        
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Password is not set for this account",
@@ -87,8 +86,11 @@ def login_member(data: MemberLogin, db: Session):
 
     
     role=get_member_role(member)
-    if member.project_role_mappings:
-        role = member.project_role_mappings[0].role.name
-    print(role)
+    if role is None:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="member with no assigned role")
+    # if member.project_role_mappings:
+    #     role = member.project_role_mappings[0].role.name
+    
     access_token = create_access_token( member,role)
-    return {"access_token": access_token, "token_type": "bearer","email":member.email,"roles":role}
+    return {"access_token": access_token, "token_type": "bearer","email":member.email,"role":role}

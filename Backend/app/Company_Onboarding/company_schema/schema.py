@@ -49,6 +49,10 @@ class Companies(BaseModel):
     domain: str
     logo: str
     subscription: SubscriptionEnum
+    admin_name:str 
+    admin_last_name:str 
+    admin_email:EmailStr
 
     class Config:
         from_attributes=True
+

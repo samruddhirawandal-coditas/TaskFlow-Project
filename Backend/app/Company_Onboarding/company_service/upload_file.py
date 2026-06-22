@@ -13,6 +13,8 @@ def logo_file(folder_name:str,file_name:str):
     return f"{folder_name}/{name}"
 
 def create_presigned_url(object_name:str,content_type:str,expiration :int=3600):
+    if not setting.AWS_S3_BUCKET_NAME:
+        return None
     s3_client = boto3.client(
         's3',
         region_name=setting.AWS_REGION,
@@ -25,9 +27,6 @@ def create_presigned_url(object_name:str,content_type:str,expiration :int=3600):
     )
     try:
         response = s3_client.generate_presigned_post(
-            # 'put_object',
-            # Params={'Bucket': bucket_name, 'Key': object_name},
-            # ExpiresIn=expiration
             Bucket=setting.AWS_S3_BUCKET_NAME,
             Key=object_name,
             Fields={"Content-Type": content_type},
@@ -43,6 +42,8 @@ def create_presigned_url(object_name:str,content_type:str,expiration :int=3600):
 def generate_logo_presigned_url(folder_name:str,file_name:str,content_type:str):
     object_name=logo_file(folder_name,file_name)
     upload_data=create_presigned_url(object_name,content_type)
+    if upload_data is None:
+        return None
     return {
         "url":upload_data["url"],
         "fields":upload_data["fields"],

@@ -12,8 +12,7 @@ from ...utils.config import setting
 
 
 ALGORITHM = "RS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+ACCESS_TOKEN_EXPIRE_MINUTES = setting.ACCESS_TOKEN_EXPIRE_MINUTES
 
 
 def create_access_token(member: Member, role: str ):
@@ -43,21 +42,3 @@ def decode_access_token(token: str):
             detail="Invalid or expired token",
         )
 
-
-# def get_current_member(
-#     token: str = Depends(oauth2_scheme),
-#     db: Session = Depends(get_db),
-# ):
-#     try:
-#         payload = decode_access_token(token)
-#         member = db.query(Member).filter(Member.id == payload.get("member_id")).first()
-
-#         if member is None:
-#             raise HTTPException(
-#                 status_code=status.HTTP_401_UNAUTHORIZED,
-#                 detail="Member not found",
-#             )
-
-#         return member
-#     except Exception as exc:
-#         return f"Exception kya hai {exc}"

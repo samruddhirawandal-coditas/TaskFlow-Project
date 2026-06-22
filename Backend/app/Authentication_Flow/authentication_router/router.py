@@ -5,7 +5,7 @@ from  app.db.base import get_db
 from ..authentication_schema.auth_schema import Request,Verify,MemberLogin
 from ..authentication_service.auth_service import login_with_otp, request_otp 
 from ..authentication_service.auth_service import login_member
-
+from ...dependencies.jwt.handler import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -25,3 +25,6 @@ def login(form_data:OAuth2PasswordRequestForm=Depends(), db: Session = Depends(g
     data=MemberLogin(email=form_data.username,password=form_data.password)
     return login_member(data, db)
 
+@router.get("/me")
+def login(user:dict=Depends(get_current_user)):
+   return user
