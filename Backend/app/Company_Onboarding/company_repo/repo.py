@@ -31,24 +31,23 @@ def get_all_companies(db:Session):
 def get_compnaies(db:Session,search:str |None=None,domain:str |None=None,subscription: SubscriptionEnum | None = None,sort_by:str="name",sort_order:str="desc",):
     query=db.query(Company)
     if search:
-
         search_by= f"%{search.strip()}%"
-        query=query.filter((Company.name.ilike(search_by)) | (Company.domain.ilike(search_by)))
-        if domain:
-            query=query.filter(Company.domain==domain)
-        if subscription:
-            query=query.filter(Company.subcription == subscription)
+    query=query.filter((Company.name.ilike(search_by)) | (Company.domain.ilike(search_by)))
+    if domain:
+        query=query.filter(Company.domain==domain)
+    if subscription:
+        query=query.filter(Company.subcription == subscription)
 
-        sorting={'name':Company.name,
-                 'domain':Company.domain,}
-        
-        sortin=sorting.get(sort_by,Company.name)
-        if sort_order.lower() =="asc":
-            query=query.order_by(asc(sortin))
-        else:
-            query=query.order_by(desc(sortin))
+    sorting={'name':Company.name,
+                'domain':Company.domain,}
+    
+    sortin=sorting.get(sort_by,Company.name)
+    if sort_order.lower() =="asc":
+        query=query.order_by(asc(sortin))
+    else:
+        query=query.order_by(desc(sortin))
 
-        return query.all()
+    return query.all()
     
 def get_companies_by_id(db: Session,company_id:int):
     return  db.query(Company).filter(Company.id==company_id).first()

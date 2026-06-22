@@ -1,5 +1,5 @@
 from logging.config import fileConfig
-from Backend.app.model import member_project_role_mapping_model
+from app.model import member_project_role_mapping_model
 from app.Company_Onboarding.company_model import Company
 from app.Authentication_Flow.authentication_model import role_model
 from app.utils.config import setting
