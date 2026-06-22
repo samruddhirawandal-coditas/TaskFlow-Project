@@ -25,9 +25,8 @@ def request_otp(email, db:Session):
     
         send_otp_email(email,otp)
     except Exception as e:
-        print(f"Exception AYA {e}")
         delete_otp(email,redis_client)
-        return {"message":"Error Aya"}
+        return {"message":"Error occured"}
         
     return {"message":"OTP sent"}
 

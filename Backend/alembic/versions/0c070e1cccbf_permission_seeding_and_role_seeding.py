@@ -44,6 +44,6 @@ VALUES
 def downgrade() -> None:
     """Downgrade schema."""
     op.execute("""
-        DELETE FROM members 
+        DELETE FROM companys
         WHERE name = 'ZOHO' AND domain='zoho.com'
     """)

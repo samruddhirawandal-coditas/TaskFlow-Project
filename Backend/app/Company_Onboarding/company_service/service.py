@@ -13,7 +13,6 @@ from ..company_model.company_model import SubscriptionEnum
 from ..company_repo.repo import create_company,get_member_by_email, get_role_by_name,create_company_admin, assign_role_to_member ,get_company_by_name ,get_company_by_domain,get_companies_by_asc,get_compnaies,get_companies_by_id ,delete_company_by_id,update_company_fields,get_all_companies
 from ...utils.config import setting
 from ...utils.hashing import hash
-# from .upload_file import uplaod_file
 
 
 

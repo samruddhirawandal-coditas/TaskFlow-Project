@@ -1,15 +1,13 @@
 from pydantic import BaseModel,EmailStr,Field
 from ..company_model.company_model import SubscriptionEnum
 class CompanyOnboarding(BaseModel):
-    name: str = Field(..., pattern=r"^(?i)[A-Z]+$")
+    name: str = Field(..., pattern=r"^[A-Za-z]+$")
     domain:str=Field(...,pattern=r"^[a-zA-Z0-9-]+\.com$")
-    admin_name:str = Field(..., pattern=r"^(?i)[A-Z]+$")
-    admin_last_name:str = Field(..., pattern=r"^(?i)[A-Z]+$")
+    admin_name:str = Field(..., pattern=r"^[A-Za-z]+$")
+    admin_last_name:str = Field(..., pattern=r"^[A-Za-z]+$")
     admin_email:EmailStr
     subscription:SubscriptionEnum
-    # message:str
-    # company_id:int
-    # admin_id:int
+
 
 class AdminActivation(BaseModel):
     email:EmailStr

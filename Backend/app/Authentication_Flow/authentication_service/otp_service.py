@@ -23,12 +23,6 @@ def save_otp(email: str, otp: str, redis_client: Redis = None):
 
 def get_otp(email: str, redis_client: Redis = None):
     client = redis_client or get_redis_client()
-    # incrementer=1
-    # if get_otp:
-    #     incrementer +=1
-    #     if incrementer >=3:
- 
-
     return client.get(otp_key(email))
 
 
