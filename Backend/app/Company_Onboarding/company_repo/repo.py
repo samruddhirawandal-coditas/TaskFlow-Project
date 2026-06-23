@@ -25,8 +25,22 @@ def get_companies_by_asc(db: Session):
     return db.query(Company).order_by(Company.id.asc()).all()
 
 def get_all_companies(db:Session):
-    return db.query(Company).all()
+    companies = db.query(Company.id,Company.name,Company.domain,Company.logo,Company.subcription.label("subscription"),Member.first_name.label("admin_name"),Member.last_name.label("admin_last_name"),Member.email.label("admin_email"),
+    ).join(Member, Member.company_id == Company.id,).join( MemberRoleMapping, MemberRoleMapping.member_id == Member.id).join(Role,Role.id == MemberRoleMapping.role_id,).filter(Role.name == "ADMIN").all()
 
+    return [
+        {
+            "id": company.id,
+            "name": company.name,
+            "domain": company.domain,
+            "logo": company.logo,
+            "subscription": company.subscription,
+            "admin_name": company.admin_name,
+            "admin_last_name": company.admin_last_name,
+            "admin_email": company.admin_email,
+        }
+        for company in companies
+    ]
 
 def get_compnaies(db:Session,search:str |None=None,domain:str |None=None,subscription: SubscriptionEnum | None = None,sort_by:str="name",sort_order:str="desc",):
     query=db.query(Company)
@@ -49,9 +63,49 @@ def get_compnaies(db:Session,search:str |None=None,domain:str |None=None,subscri
 
     return query.all()
     
+
+def get_company_model_by_id(db: Session, company_id: int):
+    return db.query(Company).filter(Company.id == company_id).first()
+
+
 def get_companies_by_id(db: Session,company_id:int):
-    return  db.query(Company).filter(Company.id==company_id).first()
-     
+    company = db.query(
+        Company.id,
+        Company.name,
+        Company.domain,
+        Company.logo,
+        Company.subcription.label("subscription"),
+        Member.first_name.label("admin_name"),
+        Member.last_name.label("admin_last_name"),
+        Member.email.label("admin_email"),
+    ).join(
+        Member,
+        Member.company_id == Company.id,
+    ).join(
+        MemberRoleMapping,
+        MemberRoleMapping.member_id == Member.id,
+    ).join(
+        Role,
+        Role.id == MemberRoleMapping.role_id,
+    ).filter(
+        Company.id == company_id,
+        Role.name == "ADMIN",
+    ).first()
+
+    if company is None:
+        return None
+
+    return {
+        "id": company.id,
+        "name": company.name,
+        "domain": company.domain,
+        "logo": company.logo,
+        "subscription": company.subscription,
+        "admin_name": company.admin_name,
+        "admin_last_name": company.admin_last_name,
+        "admin_email": company.admin_email,
+    }
+
 
 def create_company(db: Session, name: str, domain:str, logo:str,subscription:SubscriptionEnum):  #logo: str
     company = Company(

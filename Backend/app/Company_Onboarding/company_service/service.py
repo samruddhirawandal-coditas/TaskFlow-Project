@@ -10,7 +10,7 @@ from ...Authentication_Flow.authentication_service.redis import get_redis_client
 from ...Authentication_Flow.authentication_service.otp_service import generate_otp,get_otp,save_otp,verify_otp,delete_otp
 from ...Authentication_Flow.authentication_model.member_model import StatusEnum ,Member
 from ..company_model.company_model import SubscriptionEnum
-from ..company_repo.repo import create_company,get_member_by_email, get_role_by_name,create_company_admin, assign_role_to_member ,get_company_by_name ,get_company_by_domain,get_companies_by_asc,get_compnaies,get_companies_by_id ,delete_company_by_id,update_company_fields,get_all_companies
+from ..company_repo.repo import create_company,get_member_by_email, get_role_by_name,create_company_admin, assign_role_to_member ,get_company_by_name ,get_company_by_domain,get_companies_by_asc,get_compnaies,get_companies_by_id ,delete_company_by_id,update_company_fields,get_all_companies,get_company_model_by_id
 from ...utils.config import setting
 from ...utils.hashing import hash
 
@@ -122,7 +122,7 @@ def get_company(db: Session, company_id: int):
 
 
 def delete_company(db: Session, company_id: int):
-    id = get_companies_by_id(db, company_id)
+    id = get_company_model_by_id(db, company_id)
  
     if id is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
@@ -132,7 +132,7 @@ def delete_company(db: Session, company_id: int):
     return {"message": "Company deleted successfully"}
 
 def edit_company(db: Session,company_id: int,name: str | None = None,domain: str | None = None,logo: str | None = None,subscription: SubscriptionEnum | None = None,):
-    company = get_companies_by_id(db, company_id)
+    company = get_company_model_by_id(db, company_id)
 
     if company is None:
         raise HTTPException(

@@ -43,7 +43,7 @@ def get_all_companies_sorting(search:str |None=None,domain :str |None=None ,subs
     return all_companies(db,search,domain,subscription,sort_by,sort_order)
 
 
-@router.get("/{company_id}")
+@router.get("/{company_id}",response_model= Companies)
 def get_company_by_id(company_id: int,db: Session = Depends(get_db),user=Depends(role_necessary("SUPER_ADMIN"))):
     return get_company(db, company_id)
 
