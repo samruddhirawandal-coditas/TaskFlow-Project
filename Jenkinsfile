@@ -12,8 +12,8 @@ pipeline {
         AZURE_SUBSCRIPTION_ID = credentials('azure_subscription_id')
 
         //  Static Web App details
-        SWA_APP_NAME          = 'sammy-frontend'
-        AZURE_RESOURCE_GROUP  = 'taskflow-rg'
+        SWA_APP_NAME          = 'SammyFE'
+        AZURE_RESOURCE_GROUP  = 'SammyFE_group'
     }
 
     tools {
